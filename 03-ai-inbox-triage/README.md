@@ -20,7 +20,7 @@ This is the "magic moment" demo — most users haven't seen anything like it.
 | **Automated (this recipe)** | Anthropic API + SociaHive SDK | Daily 9am cron job |
 
 For the live version, just paste the prompt in
-[the inbox-triage write-up](https://github.com/sociahive/sociahive/blob/main/docs/MCP/index.md#5c-triage-your-ai-inbox-with-claude)
+[the inbox-triage recipe](https://docs.sociahive.com/cookbook#triage-your-ai-inbox-with-claude)
 into your AI assistant. The script below is for when you want to schedule it.
 
 ## Run it

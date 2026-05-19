@@ -13,7 +13,7 @@ assistant — no clicking through the SociaHive UI.
 ## Prerequisites
 
 - An MCP client connected to `https://www.sociahive.com/api/mcp` — see
-  [MCP setup guide](https://github.com/sociahive/sociahive/blob/main/docs/MCP/index.md#3-mcp-setup-guide)
+  [MCP setup guide](https://docs.sociahive.com/setup-guide)
 - At least one Instagram account connected in SociaHive
 
 ## The prompt
