@@ -32,7 +32,7 @@ Paste this verbatim into Claude/ChatGPT/Cursor:
 ## What the AI does under the hood
 
 ```
-1. list_connected_accounts        → find your Instagram account
+1. list_accounts                  → find your Instagram account
 2. generate_flow (15 AI credits)  → AI builds the entire flow graph
 3. get_flow                       → show you the result
 4. activate_flow                  → after you confirm
