@@ -10,6 +10,7 @@ example output. Pick the one that matches your job-to-be-done.
 | 01 | [Auto-reply to Instagram comments mentioning "price"](./01-auto-reply-instagram-comments/) | AI user | MCP via Claude/Cursor |
 | 02 | [Schedule a week of posts from a CSV](./02-schedule-week-of-posts-from-csv/) | Developer | REST API, Python + Node |
 | 03 | [Daily performance recap with Claude](./03-daily-performance-recap/) | Power user | MCP via Claude / Cursor |
+| 04 | [Weekly Autopilot: generate → review → approve](./04-weekly-autopilot/) | Developer | REST API, Python + Node |
 
 ## Conventions
 
