@@ -1,4 +1,4 @@
-# 02 — Schedule a week of posts from a CSV
+# 02: Schedule a week of posts from a CSV
 
 **Persona:** Developer
 **Time:** 5 minutes
@@ -6,25 +6,25 @@
 
 ## What you'll build
 
-A script that reads `posts.csv` and schedules every row across your connected
-platforms. Useful for content agencies, batch migrations, or anyone fed up
-with the SociaHive UI for bulk operations.
+A script that reads `posts.csv` and schedules every row on your connected
+accounts. Useful for content agencies and batch migrations.
 
 ## CSV format
 
-Use the included `posts.csv` or roll your own:
+Use the included `posts.csv` or roll your own. `scheduled_at` must be in the
+future, so change the example dates if they have passed:
 
 ```csv
 text,platform,scheduled_at,image_url
-"Monday motivation 💪",instagram,2026-06-01T09:00:00Z,https://cdn.example.com/mon.jpg
-"Tuesday tip: keep it short",twitter,2026-06-02T09:00:00Z,
-"Wednesday wisdom",linkedin,2026-06-03T09:00:00Z,
+"Monday motivation 💪",instagram,2027-03-01T09:00:00Z,https://cdn.example.com/mon.jpg
+"Tuesday tip: keep it short",twitter,2027-03-02T09:00:00Z,
+"Wednesday wisdom",linkedin,2027-03-03T09:00:00Z,
 ```
 
 ## Run it (Python)
 
 ```bash
-pip install sociahive       # or: pip install requests if you prefer raw fetch
+pip install sociahive
 export SOCIAHIVE_API_KEY=sk_...
 python main.py posts.csv
 ```
@@ -39,27 +39,36 @@ node main.mjs posts.csv
 
 Both scripts:
 
-- Resolve the right `account_id` per platform once and cache it (don't re-fetch)
-- Use the batch endpoint for runs >10 rows
+- Resolve the `account_id` per platform once and cache it
+- Create one post per row, about 2 seconds apart (writes are limited to 30 a minute)
+- Wait for `Retry-After` and retry when the API answers `429`
 - Print scheduled IDs as they confirm
+
+`POST /posts/bulk` acts only on posts that already exist (schedule, delete or
+change status), so it is not used here. To load a CSV as drafts instead and
+schedule them later, use `POST /posts/import` or `sociahive posts import`.
 
 ## Verify
 
+With the SociaHive CLI (its key needs the `agent:execute` scope):
+
 ```bash
+npm install -g sociahive
+export SOCIAHIVE_API_KEY=sk_...
 sociahive posts list --status scheduled --limit 20
 ```
 
-…or open the calendar view in the web dashboard.
+Or open the calendar in the web dashboard.
 
 ## Error handling tips
 
-- **`413` on `/posts/bulk`** — batch cap is 100 rows. Chunk your CSV.
-- **`400 platform_user_id required`** — your account-id lookup matched the
-  wrong account. Pass `platform_user_id` explicitly.
-- **`429`** — default rate limit is 1000 req/hr per API key. The batch
-  endpoint counts as one request.
+- **`400` with a validation message**: check the row's platform name and that
+  `scheduled_at` is an ISO 8601 time in the future.
+- **`429`**: limits are per user, across all your keys: 30 writes and 120
+  reads a minute, and 1,000 requests a day. The scripts wait for `Retry-After`.
+  See [rate limits](https://docs.sociahive.com/rate-limits).
 
 ## Cost
 
-- **$0 in AI credits** — pure REST API, no AI calls.
-- Standard platform fees apply at publish time (none for organic posts).
+- **0 AI credits**: plain REST calls, no AI.
+- One write request per row, plus one read per platform.
