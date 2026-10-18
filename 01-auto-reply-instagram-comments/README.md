@@ -12,8 +12,8 @@ assistant.
 
 ## Prerequisites
 
-- An MCP client connected to `https://www.sociahive.com/api/mcp`. See
-  [MCP setup guide](https://docs.sociahive.com/setup-guide)
+- An MCP client connected to `https://www.sociahive.com/api/mcp`. See the
+  [MCP setup guide](https://docs.sociahive.com/setup-guide).
 - At least one Instagram account connected in SociaHive
 
 ## The prompt
