@@ -1,4 +1,4 @@
-// Bulk-schedule posts from a CSV using @sociahive/sdk.
+// Schedule posts from a CSV using @sociahive/sdk, one create call per row.
 //
 // Usage:
 //   npm install @sociahive/sdk
@@ -8,12 +8,30 @@
 // CSV columns: text, platform, scheduled_at, image_url
 
 import { readFileSync } from 'node:fs'
-import { SociaHive } from '@sociahive/sdk'
+import { SociaHive, SociaHiveError } from '@sociahive/sdk'
 
-const BATCH_THRESHOLD = 10
+// Writes are limited to 30 a minute per user, so pace the creates.
+const PAUSE_MS = 2100
+const MAX_RETRIES = 3
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+// Create one post; on a 429 wait for Retry-After (60s if the header is missing).
+async function createWithRetry(sh, payload) {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await sh.posts.create(payload)
+    } catch (err) {
+      if (!(err instanceof SociaHiveError) || !err.isRateLimited || attempt >= MAX_RETRIES) throw err
+      const waitSeconds = err.retryAfter ?? 60
+      console.log(`rate limited, waiting ${waitSeconds}s`)
+      await sleep(waitSeconds * 1000)
+    }
+  }
+}
 
 function parseCsv(text) {
-  // Tiny CSV parser — good enough for the simple format above; not RFC 4180.
+  // Tiny CSV parser, good enough for the simple format above; not RFC 4180.
   // If your text fields contain commas, swap in `csv-parse` or `papaparse`.
   const [header, ...rows] = text.trim().split('\n')
   const cols = header.split(',')
@@ -66,18 +84,11 @@ async function main() {
     accountCache.set(platform, data[0].id)
   }
 
-  const payloads = rows.map((r) => buildPayload(r, accountCache.get(r.platform)))
-
-  if (payloads.length > BATCH_THRESHOLD) {
-    const result = await sh.posts.bulk(payloads)
-    for (const post of result.data ?? []) {
-      console.log(`scheduled ${post.id} on ${post.platforms[0].platform}`)
-    }
-  } else {
-    for (const payload of payloads) {
-      const post = await sh.posts.create(payload)
-      console.log(`scheduled ${post.id} on ${payload.platforms[0].platform}`)
-    }
+  for (const [i, row] of rows.entries()) {
+    if (i > 0) await sleep(PAUSE_MS)
+    const payload = buildPayload(row, accountCache.get(row.platform))
+    const post = await createWithRetry(sh, payload)
+    console.log(`scheduled ${post.id} on ${payload.platforms[0].platform}`)
   }
 }
 

@@ -7,6 +7,7 @@
   </a>
 </p>
 
+<p align="center">Run your social media from your AI tool: schedule posts, build DM and comment automations, and read analytics.</p>
 <p align="center">Runnable recipes for the SociaHive API and MCP server.</p>
 
 <p align="center">
@@ -29,9 +30,9 @@ example output. Pick the one that matches the job you want done.
 
 | # | Recipe | Persona | Surface |
 |---|---|---|---|
-| 01 | [Auto-reply to Instagram comments mentioning "price"](./01-auto-reply-instagram-comments/) | AI user | MCP via Claude/Cursor |
+| 01 | [Auto-reply to Instagram comments mentioning "price"](./01-auto-reply-instagram-comments/) | AI user | MCP via your AI tool |
 | 02 | [Schedule a week of posts from a CSV](./02-schedule-week-of-posts-from-csv/) | Developer | REST API, Python + Node |
-| 03 | [Daily performance recap with Claude](./03-daily-performance-recap/) | Power user | MCP via Claude / Cursor |
+| 03 | [Daily performance recap from your AI tool](./03-daily-performance-recap/) | Power user | MCP via your AI tool |
 
 ## Conventions
 
