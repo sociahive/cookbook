@@ -33,7 +33,7 @@ Paste this verbatim into Claude/ChatGPT/Cursor:
 
 ```
 1. list_accounts                  → find your Instagram account
-2. generate_flow (15 AI credits)  → AI builds the entire flow graph
+2. generate_flow                  → AI builds the entire flow graph
 3. get_flow                       → show you the result
 4. activate_flow                  → after you confirm
 ```
@@ -55,9 +55,9 @@ The AI calls `get_flow_stats`. New flows start at 0 across the board.
 
 ## Cost
 
-- **15 AI credits** for the `generate_flow` call (one-time, at build)
+- **0 AI credits** to build the flow: `generate_flow` is free.
 - **0 credits** per future auto-reply (template messages are free; AI-personalized
   replies cost 5 credits each)
 
-See [tier-limits docs](https://www.sociahive.com/mcp) for monthly credit
-allocations.
+See [pricing](https://www.sociahive.com/pricing) for monthly credit
+allowances.
