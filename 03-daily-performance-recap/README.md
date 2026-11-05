@@ -23,7 +23,7 @@ Paste this into Claude / ChatGPT / Cursor:
 > 3. List anything scheduled to publish today.
 > 4. Output a 6-line summary:
 >    - Top performing flow (by completions) and why
->    - Worst performing flow (by error rate) and what to investigate
+>    - Weakest flow (lowest completions per trigger) and what to investigate
 >    - Top post (by engagement) and what it had in common
 >    - Total reach / impressions across platforms vs the previous day
 >    - Anything queued for today I should review before it ships
@@ -34,7 +34,7 @@ Paste this into Claude / ChatGPT / Cursor:
 ## What the AI does under the hood
 
 ```
-1. list_flows_with_stats     → flow performance + error counts
+1. list_flows (mode: rank)   → flows ranked by triggers, with unique users and completions
 2. get_analytics_overview    → cross-platform impressions / engagement
 3. list_scheduled_posts      → today's queue
 ```
